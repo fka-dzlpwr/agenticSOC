@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "nightfall": {
+      "type": "http",
+      "url": "https://api.nightfall.ai/v3/mcp",
+      "headers": {
+        "Authorization": "Bearer ${NIGHTFALL_API_KEY}"
+      },
+      "description": "Nightfall AI DLP & Data Exfiltration MCP Server (26 read-only tools)"
+    },
+    "scanner": {
+      "type": "http",
+      "url": "${SCANNER_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${SCANNER_MCP_API_KEY}"
+      },
+      "description": "Scanner.dev Security Data Lake MCP Server"
+    },
+    "slack": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID": "${SLACK_TEAM_ID}"
+      },
+      "description": "Slack MCP Server for posting triage summaries and staging questions"
+    }
+  }
+}
