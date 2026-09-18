@@ -43,9 +43,9 @@ Every intermediate tool call (queries, parameters, execution timestamps) and fin
 ```mermaid
 flowchart TD
     subgraph Ingestion
-        SumoIngest["Sumo Logic Scheduled Alerts"] --> PubSubTopic["Pub/Sub: soc-alerts"]
+        NightfallLogs["Nightfall.AI DLP Events"] --> SumoIngest["Sumo Logic (SIEM Ingestion)"]
+        SumoIngest --> PubSubTopic["Pub/Sub: soc-alerts (Monitors / Webhooks)"]
         CloudArmorIngest["Cloud Armor Security Policy Logs"] --> PubSubTopic
-        NightfallIngest["Nightfall.AI Webhooks / Alerts"] --> PubSubTopic
         SCCIngest["Cloud SCC Findings"] --> PubSubTopic
     end
 
@@ -57,12 +57,12 @@ flowchart TD
         CloudRunTriage --> VertexAI["Vertex AI (Gemini 3 Pro / Claude 3.7 Sonnet)"]
         
         subgraph "Telemetry Providers"
-            CloudRunTriage --> SumoTool["Sumo Logic (Search Job API)"]
+            CloudRunTriage --> SumoTool["Sumo Logic (Search Job API - Cross-Cloud & Nightfall DLP)"]
             CloudRunTriage --> GCPAuditTool["Google Cloud Audit Logs"]
             CloudRunTriage --> ArmorTool["Google Cloud Armor"]
             CloudRunTriage --> OktaTool["Okta (System Log API & User Risk)"]
             CloudRunTriage --> GWSTool["Google Workspace (Admin SDK)"]
-            CloudRunTriage --> NightfallTool["Nightfall.AI (Developer API & MCP)"]
+            CloudRunTriage --> NightfallTool["Nightfall.AI (Developer API & MCP - Deep Findings & Actor Analysis)"]
             CloudRunTriage --> CSTool["CrowdStrike Falcon (EDR)"]
             CloudRunTriage --> JamfSecTool["Jamf Security Cloud (MTD & ZTNA)"]
             CloudRunTriage --> JamfProTool["Jamf Pro (Apple MDM)"]
@@ -90,12 +90,12 @@ flowchart TD
 
 | Layer | System | Integration Mechanism | Key Investigative Signals |
 | :--- | :--- | :--- | :--- |
-| **Audit Logs** | **Sumo Logic** | REST Search Job API | Multi-cloud access logs, on-prem VPN, cross-service event correlation |
+| **Audit Logs** | **Sumo Logic** | REST Search Job API | Multi-cloud access logs, on-prem VPN, **ingested Nightfall DLP logs**, cross-service event correlation |
 | **Cloud Audit**| **Google Cloud Audit Logs** | Cloud Logging API | `SetIamPolicy`, Service Account key creation, BigQuery/Storage data reads |
 | **WAF / Edge** | **Google Cloud Armor** | Cloud Logging / Compute API | Evaluated WAF rules (`OWASP_TOP_10`), blocked IPs, Adaptive Protection alerts |
 | **Primary IdP**| **Okta** | Okta System Log API (`/api/v1/logs`) | Authentication factors (FastPass/FIDO2 vs SMS), ThreatInsight, impossible travel |
 | **SaaS Audit** | **Google Workspace** | Admin SDK Reports API | User logins, 2FA challenges, Drive external file shares, OAuth app grants |
-| **Cloud DLP**  | **Nightfall.AI** | Developer API & MCP Server | 26 Read-only tools (`search_violations`, `search_exfiltration_events`, leaked secrets) |
+| **Cloud DLP**  | **Nightfall.AI** | Developer API & MCP Server (Logs ingested to Sumo Logic) | 26 Read-only tools (`search_violations`, `get_violation_findings`, `search_exfiltration_events`, leaked secrets) |
 | **EDR**        | **CrowdStrike Falcon**| Falcon OAuth2 API | Active detections, host health, containment status, process execution trees |
 | **MTD & ZTNA** | **Jamf Security Cloud**| Radar API | OS compromise, jailbreak/root, malicious Wi-Fi, blocked C2 connections |
 | **Apple MDM**  | **Jamf Pro** | Jamf Pro Classic / Pro API | Device enrollment, FileVault 2 encryption, macOS version compliance |

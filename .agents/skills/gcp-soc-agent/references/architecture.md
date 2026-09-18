@@ -3,13 +3,13 @@
 ## 1. Google Cloud Platform Architecture
 
 ```
-                                  +-----------------------+
-                                  |    Alert Producers    |
-                                  |  - Sumo Logic Webhook |
-                                  |  - Cloud Armor Logs   |
-                                  |  - Nightfall Webhook  |
-                                  |  - SCC Findings       |
-                                  +-----------+-----------+
+                                  +----------------------------------------+
+                                  |            Alert Producers             |
+                                  |  - Sumo Logic Alerts (Cross-Cloud &   |
+                                  |    Ingested Nightfall DLP Events)      |
+                                  |  - Cloud Armor Edge Logs               |
+                                  |  - Cloud SCC Findings                  |
+                                  +-------------------+--------------------+
                                               |
                                               v
                                +-----------------------------+

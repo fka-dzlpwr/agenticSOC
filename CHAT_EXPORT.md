@@ -109,6 +109,13 @@ If you are starting a new Antigravity session, paste the following prompt to res
   - **Triage Agent**: **Event-Driven Push via Cloud Pub/Sub** (wakes up Cloud Run from 0 instances in milliseconds; $0 idle cost; no polling).
   - **Threat Hunter**: **Cron Schedule via Cloud Scheduler** (`0 */6 * * *` triggers Cloud Run Jobs API; runs to completion; terminates).
 
+### Turn 13: Pipeline Architecture Refinement (Nightfall -> Sumo Logic)
+- **User Clarification**: *"Minor correction. Nightfall logs are ingested into sumo logic."*
+- **Resolution**:
+  - Updated architectural diagrams, telemetry matrix, and prompt guides:
+    - **Centralized SIEM Correlation**: Nightfall DLP event and violation logs drain into Sumo Logic (`_sourceCategory=nightfall/*`), enabling cross-telemetry correlation (DLP + Cloud Audit + Cloud Armor + Okta) via Sumo Logic search jobs.
+    - **API & MCP Role**: The Nightfall Developer API and MCP server (26 read-only tools) remain active during triage for deep finding inspection (`get_violation_findings`), raw secret payload matches, real-time actor activity profiling (`get_actor_activity`), and endpoint AI inventory auditing (`list_mcp_servers`).
+
 ---
 
 ## 3. Native Disk File Locations

@@ -38,14 +38,14 @@ Every agent implementation and workflow in this codebase MUST follow these four 
 
 The agent connects to and correlates across 11 security platforms:
 - **Centralized Audit Logs & WAF**:
-  - `Sumo Logic`: Historical SIEM search job queries
+  - `Sumo Logic`: Historical SIEM search job queries (cross-cloud, on-prem, and ingested Nightfall DLP logs)
   - `Google Cloud Audit Logs`: GCP Admin Activity, Data Access, IAM permission changes
   - `Google Cloud Armor`: Edge WAF/DDoS security policy logs, blocked requests, Adaptive Protection
 - **Primary IdP & SaaS**:
   - `Okta`: Primary IdP (System Log `/api/v1/logs`, MFA factor evaluation, ThreatInsight risk)
   - `Google Workspace`: Admin SDK Reports API (Logins, 2FA challenges, Drive sharing, OAuth tokens)
 - **Data Loss Prevention (DLP) & Exfiltration**:
-  - `Nightfall.AI`: Developer API & MCP server (26 read-only tools: `search_violations`, `get_violation_findings`, `search_exfiltration_events`, `get_actor_activity`)
+  - `Nightfall.AI`: Developer API & MCP server (26 read-only tools: `search_violations`, `get_violation_findings`, `search_exfiltration_events`, `get_actor_activity`). *Note*: Nightfall DLP logs are ingested directly into Sumo Logic for centralized SIEM correlation.
 - **EDR & Endpoint Security**:
   - `CrowdStrike Falcon`: Host status, active detections, sensor containment
   - `Jamf Security Cloud`: Mobile Threat Defense (MTD), network threat prevention, ZTNA risk

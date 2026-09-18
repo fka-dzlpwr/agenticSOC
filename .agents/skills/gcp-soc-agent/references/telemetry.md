@@ -7,16 +7,22 @@ This document specifies the exact API contracts, query syntax, and investigative
 ## 1. Centralized Audit Logs & Edge Security
 
 ### 1.1 Sumo Logic
-- **Primary Use**: Search cross-cloud logs (AWS, Azure, GCP, on-prem firewalls, VPNs).
+- **Primary Use**: Search cross-cloud logs (AWS, Azure, GCP, on-prem firewalls, VPNs) and **ingested Nightfall DLP logs**.
 - **API Endpoint**: `POST https://api.{endpoint}.sumologic.com/api/v1/search/jobs`
 - **Query Method**: Search Job API with polling for results (`/api/v1/search/jobs/{id}/messages`).
-- **Standard Investigative Query**:
+- **Standard Cross-Platform Investigative Query**:
   ```sql
   _sourceCategory=* (user="jane@acme.com" OR "203.0.113.42")
   | parse "action=* " as action
   | count by _sourceCategory, action, status
   ```
-- **Investigation Output**: Chronological event list, user actions across disparate systems, failed/successful authorizations.
+- **Nightfall DLP Ingestion Query (Centralized SIEM)**:
+  ```sql
+  _sourceCategory=nightfall/* (actor="jane@acme.com" OR "CRITICAL" OR "HIGH")
+  | json "event.detectorName", "event.actor", "event.riskScore", "event.fileLocation" as detector, actor, risk, target
+  | count by detector, actor, risk, target
+  ```
+- **Investigation Output**: Chronological event list, user actions across disparate systems, failed/successful authorizations, and correlated DLP violations.
 
 ### 1.2 Google Cloud Audit Logs
 - **Primary Use**: Track IAM privilege modifications, service account key creations, resource deletions, and sensitive BigQuery/Cloud Storage reads.
@@ -81,6 +87,10 @@ This document specifies the exact API contracts, query syntax, and investigative
 
 ### 3.1 Nightfall.AI (Developer API & MCP)
 - **Primary Use**: Cloud DLP violation detection, sensitive data leakage (credentials, API keys, PII, PHI), and data exfiltration across SaaS and endpoints.
+- **Ingestion & SIEM Architecture**:
+  - Nightfall event and violation logs are ingested into **Sumo Logic** (`_sourceCategory=nightfall/*`).
+  - Cross-source SIEM queries, timeline assembly, and correlation with network/cloud logs are executed via Sumo Logic search jobs.
+  - The **Nightfall Developer API & MCP server** are queried during active investigation for granular finding details (`get_violation_findings`), raw detector matches, real-time actor activity profiling, and local endpoint AI inventory.
 - **Endpoint**: `https://api.nightfall.ai/v3` or Nightfall MCP server protocol.
 - **Tool Safety Annotation**:
   - **26 Read-Only Tools** (`readOnlyHint: true`):
