@@ -29,7 +29,7 @@
        v                           v
 +--------------+           +------------------+
 |  Vertex AI   |           |  Google Secret   |
-|  Gemini 2.5  |           |  Manager         |
+|  Gemini 3    |           |  Manager         |
 |  / Claude    |           |  (API Tokens)    |
 +--------------+           +------------------+
        |

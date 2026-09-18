@@ -1,0 +1,28 @@
+# Environments & Secrets
+.env
+.env.local
+*.key
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Logs & Editor artifacts
+*.log
+nvim.log
+.DS_Store
+.idea/
+.vscode/
+
+# Terraform local state
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl

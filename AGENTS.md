@@ -68,7 +68,7 @@ The agent connects to and correlates across 11 security platforms:
   - Triggered by **Google Cloud Scheduler** (cron: `0 */6 * * *`).
   - Executed on **Google Cloud Run Jobs** (batch container task searching across 30-365 days of historical logs).
 - **AI / LLM Engine**:
-  - **Vertex AI** (Gemini 2.5 Pro / Claude 3.7 Sonnet on Vertex) with fallback to Anthropic API.
+  - **Vertex AI** (Gemini 3 Pro / Gemini 3.8 Flash / Claude 3.7 Sonnet on Vertex) with fallback to Anthropic API.
 - **Secrets Management**:
   - **Google Secret Manager** for all enterprise API tokens and credentials.
 - **Infrastructure as Code**:

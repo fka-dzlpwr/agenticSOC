@@ -16,7 +16,7 @@ This skill provides step-by-step procedures and runbooks for building, operating
 
 - **Triage Agent**: Event-driven container running on **Google Cloud Run**, subscribed to a **Cloud Pub/Sub** push topic (`soc-alerts`) with a dead-letter queue (`soc-alerts-dlq`).
 - **Threat Hunter**: Scheduled batch container running on **Google Cloud Run Jobs**, invoked every 6 hours by **Cloud Scheduler**.
-- **LLM Engine**: **Vertex AI** (`gemini-2.5-pro` or `claude-3-7-sonnet` on Vertex) or Anthropic direct API.
+- **LLM Engine**: **Vertex AI** (`gemini-3.0-pro` / `gemini-3.8-flash` or `claude-3-7-sonnet` on Vertex) or Anthropic direct API.
 - **Investigation Framework**: 4-phase hypothesis-driven investigation with a mandatory double self-critique loop.
 - **Staging Boundaries**: Read-only tools for autonomous context gathering; outputs end in **"questions, not instructions"** for human review in Slack.
 

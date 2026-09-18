@@ -54,7 +54,7 @@ flowchart TD
         PushSub --> DLQ["Dead Letter Topic: soc-alerts-dlq"]
         PushSub --> CloudRunTriage["Cloud Run Service: soc-triage-agent"]
         CloudRunTriage --> SecretMgr["Google Secret Manager"]
-        CloudRunTriage --> VertexAI["Vertex AI (Gemini 2.5 Pro / Claude 3.7 Sonnet)"]
+        CloudRunTriage --> VertexAI["Vertex AI (Gemini 3 Pro / Claude 3.7 Sonnet)"]
         
         subgraph "Telemetry Providers"
             CloudRunTriage --> SumoTool["Sumo Logic (Search Job API)"]
@@ -185,7 +185,7 @@ agenticSOC/
 2. **Phase 2: 11 Telemetry Integrations**:
    - Live API clients + deterministic mock responders for Sumo Logic, Cloud Audit, Cloud Armor, Okta, Google Workspace, Nightfall, CrowdStrike, Jamf Security Cloud, Jamf Pro, Intune, Abnormal.AI, and Threat Intel.
 3. **Phase 3: Agent Reasoning & LLM Engine**:
-   - Unified Vertex AI (Gemini 2.5 Pro / Claude 3.7 Sonnet) client with automatic JSON error correction.
+   - Unified Vertex AI (Gemini 3 Pro / Gemini 3.8 Flash / Claude 3.7 Sonnet) client with automatic JSON error correction.
    - 4-phase Triage Agent with double self-critique loop.
    - 6-phase Threat Hunting Agent with CISA KEV ingestion and historical log sweep.
 4. **Phase 4: Cloud Run Server & CLI Harness**:
